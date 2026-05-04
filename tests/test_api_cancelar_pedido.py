@@ -1,3 +1,4 @@
+# Vendo se tudo ta funfando
 def test_deve_cancelar_pedido_com_sucesso(client):
     client.post("/clientes", json={"cpf": "11122233344", "nome": "Cliente X"})
     client.post("/produtos", json={"codigo": 1, "valor": 10.0, "tipo": 1, "desconto_percentual": 10.0})
@@ -16,7 +17,7 @@ def test_deve_cancelar_pedido_com_sucesso(client):
     data = response.json()
     assert data["ok"] is True
     assert data["mensagem"] == "Pedido cancelado com sucesso"
-
+# Não deve quebrar o espaço tempo cancelando um pedido que não existe KKKKKKKK
 def test_nao_deve_cancelar_pedido_inexistente(client):
     response = client.post("/lanchonete/pedidos/999/cancelar")
 
@@ -24,7 +25,7 @@ def test_nao_deve_cancelar_pedido_inexistente(client):
 
     data = response.json()
     assert data["detail"] == "Pedido não encontrado ou não pode ser cancelado"
-
+# Não tem q  cancelar pedido finalizado, tem q retornar erro dizendo que não pode cancelar pedido finalizado, não que o pedido não existe
 def test_nao_deve_cancelar_pedido_finalizado(client):
     client.post("/clientes", json={"cpf": "22233344455", "nome": "Cliente Y"})
     client.post("/produtos", json={"codigo": 2, "valor": 20.0, "tipo": 2, "desconto_percentual": 0.0})
@@ -45,6 +46,7 @@ def test_nao_deve_cancelar_pedido_finalizado(client):
     data = response.json()
     assert data["detail"] == "Pedido não encontrado ou não pode ser cancelado"
 
+# listar pedidos cancelados
 def test_deve_listar_pedidos_cancelados(client):
     client.post("/clientes", json={"cpf": "33344455566", "nome": "Cliente Z"})
     client.post("/produtos", json={"codigo": 3, "valor": 15.0, "tipo": 1, "desconto_percentual": 5.0})
@@ -67,3 +69,5 @@ def test_deve_listar_pedidos_cancelados(client):
     assert isinstance(data, list)
     assert len(data) >= 1
     assert data[0]["esta_cancelado"] is True
+
+# Agora o Pyteste ta dando apenas 2 erros, não sei como pq quase não mexi em nada só adicionei contexto
